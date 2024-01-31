@@ -3,8 +3,8 @@ package com.vtxlab.bootcamp.bootcampsbfakedatabase.database;
 import com.vtxlab.bootcamp.bootcampsbfakedatabase.model.Cat;
 
 public class CatDatabase {
-  
-    private static Cat[] cats;
+
+  private static Cat[] cats;
 
   private static final int dbLength = 10;
 
@@ -20,9 +20,10 @@ public class CatDatabase {
     return cats[index];
   }
 
-  public static void setCat(int index, Cat cat) {
+  public static Cat setCat(int index, Cat cat) {
     if (index < 0 || index > dbLength - 1)
       throw new IllegalArgumentException();
     cats[index] = cat;
+    return cat;
   }
 }
