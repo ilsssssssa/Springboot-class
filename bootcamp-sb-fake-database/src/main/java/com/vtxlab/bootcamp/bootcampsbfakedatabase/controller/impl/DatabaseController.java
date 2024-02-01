@@ -1,5 +1,8 @@
 package com.vtxlab.bootcamp.bootcampsbfakedatabase.controller.impl;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,7 +15,6 @@ import com.vtxlab.bootcamp.bootcampsbfakedatabase.service.CatDatabaseService;
 @RestController // (@Controller + @ResponseBody)
 // Create an object of this class, and put it into spring context
 @RequestMapping(value = "/api/v1")
-
 public class DatabaseController implements DatabaseOperation {
 
   @Autowired // dependency injection 自動裝配 (NEW OBJECT) // Polymorphism 過程
@@ -24,6 +26,18 @@ public class DatabaseController implements DatabaseOperation {
     // return new CatDatabaseServiceImpl().getCatFromStaticMemory(index);
     return catDatabaseService.getCat(index);
   }
+
+  @Override
+  public List<Cat> getCats() {
+    return Arrays.stream(catDatabaseService.getCats()) //
+        .collect(Collectors.toList());
+  }
+
+  @Override
+  public Cat getCat2(int index) {
+    return catDatabaseService.getCat(index);
+  }
+
 
   @Override
   public void setCat(int index, String name, int age) {
@@ -43,12 +57,12 @@ public class DatabaseController implements DatabaseOperation {
 
   @Override
   public Cat updateCat(int idx, Cat cat) {
-    return  catDatabaseService.updateCat(idx, cat);
+    return catDatabaseService.updateCat(idx, cat);
   }
 
   @Override
   public Cat patchCatName(int idx, String name) {
-   return catDatabaseService.patchCatName(idx, name);
+    return catDatabaseService.patchCatName(idx, name);
   }
 
   @Override

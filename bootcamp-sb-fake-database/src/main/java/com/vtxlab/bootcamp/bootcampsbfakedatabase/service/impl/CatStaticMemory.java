@@ -1,6 +1,5 @@
 package com.vtxlab.bootcamp.bootcampsbfakedatabase.service.impl;
 
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import com.vtxlab.bootcamp.bootcampsbfakedatabase.database.CatDatabase;
 import com.vtxlab.bootcamp.bootcampsbfakedatabase.model.Cat;
@@ -29,6 +28,11 @@ public class CatStaticMemory implements CatDatabaseService {
   @Override
   public Cat getCat(int index) {
     return CatDatabase.getCat(index);
+  }
+
+  @Override
+  public Cat[] getCats() {
+    return CatDatabase.getCats();
   }
 
   @Override

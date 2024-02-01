@@ -14,6 +14,10 @@ public class CatDatabase {
     cats[1] = new Cat("Mary", 1);
   }
 
+  public static Cat[] getCats() {
+    return cats;
+  }
+
   public static Cat getCat(int index) {
     if (index < 0 || index > dbLength - 1)
       throw new IllegalArgumentException();

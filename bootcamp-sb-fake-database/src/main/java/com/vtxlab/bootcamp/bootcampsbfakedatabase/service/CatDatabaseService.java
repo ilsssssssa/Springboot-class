@@ -1,5 +1,6 @@
 package com.vtxlab.bootcamp.bootcampsbfakedatabase.service;
 
+import java.util.List;
 import com.vtxlab.bootcamp.bootcampsbfakedatabase.model.Cat;
 
 public interface CatDatabaseService {
@@ -9,6 +10,8 @@ public interface CatDatabaseService {
   // Cat setCatToStaticMemory(int index, Cat cat);
 
   Cat getCat(int index);
+
+  Cat[] getCats();
 
   Cat setCat(int index, Cat cat);
 
