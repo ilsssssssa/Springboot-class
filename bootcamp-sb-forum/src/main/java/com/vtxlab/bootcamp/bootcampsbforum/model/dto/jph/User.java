@@ -1,11 +1,9 @@
 package com.vtxlab.bootcamp.bootcampsbforum.model.dto.jph;
 
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 
 @Getter
@@ -16,7 +14,6 @@ import lombok.ToString;
 @EqualsAndHashCode
 @Builder // Testing only. Not required for Deserialization
 
-// List<User> user =
 public class User {
 
   private int id;
@@ -56,10 +53,11 @@ public class User {
   @Getter
   public static class Location {
 
-    private String lat;
+    @JsonProperty(value = "lat")
+    private String latitude;
 
-    private String lng;
-
+    @JsonProperty(value = "lng")
+    private String longitude;
   }
 
   // @Setter
@@ -70,7 +68,8 @@ public class User {
 
     private String catchPhrase;
 
-    private String bs;
+    @JsonProperty(value = "bs")
+    private String busService;
 
   }
 
