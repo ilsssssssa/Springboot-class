@@ -2,18 +2,21 @@ package com.vtxlab.bootcamp.bootcampsbforum.controller.impl;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.vtxlab.bootcamp.bootcampsbforum.controller.GovOperation;
+import com.vtxlab.bootcamp.bootcampsbforum.dto.gov.PostDTO;
 import com.vtxlab.bootcamp.bootcampsbforum.dto.gov.UserCommentDTO;
 import com.vtxlab.bootcamp.bootcampsbforum.dto.gov.UserPostDTO;
 import com.vtxlab.bootcamp.bootcampsbforum.dto.gov.mapper.GovMapper;
-import com.vtxlab.bootcamp.bootcampsbforum.infra.ApiResp;
+import com.vtxlab.bootcamp.bootcampsbforum.infra.ApiResponse;
 import com.vtxlab.bootcamp.bootcampsbforum.infra.ResourceNotFound;
 import com.vtxlab.bootcamp.bootcampsbforum.infra.Syscode;
 import com.vtxlab.bootcamp.bootcampsbforum.model.dto.jph.Post;
+import com.vtxlab.bootcamp.bootcampsbforum.model.dto.jph.User;
 import com.vtxlab.bootcamp.bootcampsbforum.service.PostService;
 import com.vtxlab.bootcamp.bootcampsbforum.service.UserService;
 
@@ -28,35 +31,44 @@ public class GovController implements GovOperation {
   private PostService postService;
 
   @Override
-  public ResponseEntity<ApiResp<UserPostDTO>> getUser(int userId)
-      throws ResourceNotFound {
+  public ApiResponse<UserPostDTO> getUser(int userId) {
     // 1. User Service
     // 2. Post Service
     // 3. relate the user and post
     // 4. set DTO object and return
-    Optional<UserPostDTO> userPostDTO = userService.getUsers().stream() //
-        .filter(e -> e.getId() == userId) //
+
+    User user = userService.getUser(userId);
+
+    List<PostDTO> postDTOs = postService.getPosts().stream() //
+        .filter(e -> e.getUserId() == userId) //
         .map(e -> {
-          List<Post> posts = postService.getPosts();
-          return GovMapper.map(e, posts);
-        }).findFirst();
+          return PostDTO.builder() //
+              .id(e.getId()) //
+              .title(e.getTitle()) //
+              .body(e.getBody()).build();
+        }).collect(Collectors.toList());
 
-    if (userPostDTO.isPresent()) {
-      ApiResp<UserPostDTO> apiResp = ApiResp.<UserPostDTO>builder() //
-          .code(Syscode.OK.getCode()) //
-          .message(Syscode.OK.getMessage()) //
-          .data(userPostDTO.get()) //
-          .build();
-      return ResponseEntity.ok(apiResp); // ResponseEntity.ok() -> http status = 200
-    }
+    UserPostDTO userPostDTO = UserPostDTO.builder() //
+        .id(user.getId()).email(user.getEmail()).phone(user.getPhone())
+        .postDTOs(postDTOs).build();
 
-    // return ResponseEntity.noContent().build(); // ResponseEntity.noContent() -> http status = 204
-    throw new ResourceNotFound(Syscode.NOTFOUND);
+    return ApiResponse.<UserPostDTO>builder() //
+        .code(Syscode.OK.getCode()) //
+        .message(Syscode.OK.getMessage()) //
+        .data(userPostDTO) //
+        .build();
   }
 
   @Override
   public UserCommentDTO getUserComments(int userId) {
     return null;
+  }
+
+  // GlobalExceptionHandler -> NPE
+  @Override
+  public String testNPE() {
+    String s = null;
+    return s.concat("hello");
   }
 
 }

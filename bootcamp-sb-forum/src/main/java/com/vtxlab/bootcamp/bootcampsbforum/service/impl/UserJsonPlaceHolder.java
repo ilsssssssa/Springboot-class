@@ -2,44 +2,55 @@ package com.vtxlab.bootcamp.bootcampsbforum.service.impl;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
+import com.vtxlab.bootcamp.bootcampsbforum.dto.gov.UserPostDTO;
+import com.vtxlab.bootcamp.bootcampsbforum.dto.gov.mapper.GovMapper;
+import com.vtxlab.bootcamp.bootcampsbforum.infra.BcUtil;
+import com.vtxlab.bootcamp.bootcampsbforum.infra.ResourceNotFound;
 import com.vtxlab.bootcamp.bootcampsbforum.infra.Scheme;
+import com.vtxlab.bootcamp.bootcampsbforum.infra.Syscode;
+import com.vtxlab.bootcamp.bootcampsbforum.model.dto.jph.Post;
 import com.vtxlab.bootcamp.bootcampsbforum.model.dto.jph.User;
+import com.vtxlab.bootcamp.bootcampsbforum.service.PostService;
 import com.vtxlab.bootcamp.bootcampsbforum.service.UserService;
 
 @Service
 public class UserJsonPlaceHolder implements UserService {
 
   @Value(value = "${api.jph.domain}")
-  private String domain; // jph class ,URL
+  private String domain;
 
   @Value(value = "${api.jph.endpoints.user}")
   private String userEndpoint;
 
+  @Autowired
+  private PostService postService;
+
   @Override
   public List<User> getUsers() {
-
     RestTemplate restTemplate = new RestTemplate();
+    String userUrl = BcUtil.url(Scheme.HTTPS, domain, userEndpoint);
+    User[] users = restTemplate.getForObject(userUrl, User[].class);
 
-    String userUrl = url(domain, userEndpoint);
-
-    User[] users =restTemplate.getForObject(url(domain, userEndpoint), User[].class);
-
-    return Arrays.stream(users)
-      .collect(Collectors.toList());
+    return Arrays.stream(users) //
+        .collect(Collectors.toList());
   }
 
-  private static String url(String domain, String endpoint) {
-    
-    return UriComponentsBuilder.newInstance() //
-        .scheme(Scheme.HTTPS.lowercaseName()) // = .scheme("https")
-        .host(domain) //
-        .path(endpoint) //
-        .toUriString(); // handle special character, such as : / \
+  @Override
+  public User getUser(int index) {
+    Optional<User> userPostDTO = this.getUsers().stream() //
+        .filter(e -> e.getId() == index) //
+        .findFirst();
+    if (userPostDTO.isPresent())
+      return userPostDTO.get();
+    throw new ResourceNotFound(Syscode.NOTFOUND);
   }
+
+
 
 }
