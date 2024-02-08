@@ -1,6 +1,21 @@
 api:
   jph:
-    domain: "jsonplaceholder.typicode.com" 
+    domain: "jsonplaceholder.typicode.com"
     endpoints:
       user: "/users"
       post: "/posts"
+
+database: 
+  postgres: "db_forum"
+
+spring:
+  datasource:
+    driverClassName: "org.hibernate.dialect.PostgreSQLDialect" # plug in # change drivername can change different product, no need to compile
+    url: "jdbc:postgresql://localhost:5432/${database.postgres}"
+    username: "postgres"
+    password: "admin1234"
+    
+spring.jpa:
+  show-sql: true
+  hibernate.ddl-auto: update # update
+  # Hibernate ddl auto (create, create-drop, validate, update)

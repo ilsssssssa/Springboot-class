@@ -10,11 +10,15 @@ import com.vtxlab.bootcamp.bootcampsbforum.infra.ApiResponse;
 
 public interface GovOperation {
 
-  // 1. no user found
+// 1. no user found
   // 2. user found, but no posts -> empty array of posts
-  @GetMapping(value = "/users")
+  @GetMapping(value = "/user")
   @ResponseStatus(value = HttpStatus.OK)
   ApiResponse<UserPostDTO> getUser(@RequestParam(value = "id") int userId);
+
+  @GetMapping(value = "/users")
+  @ResponseStatus(value = HttpStatus.OK)
+  ApiResponse<List<UserPostDTO>> getUsers();
 
   // 1. no user found
   // 2. user found, but no comments -> empty array of comments
@@ -23,6 +27,9 @@ public interface GovOperation {
 
   @GetMapping(value = "/test/npe")
   String testNPE();
+
+  @GetMapping(value = "/test/modelmapper")
+  UserDTO testModelMapper();
 
   // 404 -> request path issue or resource not found
   // 204 -> id not found. Processed the business logic, record not found
