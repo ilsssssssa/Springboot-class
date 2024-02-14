@@ -1,10 +1,12 @@
 package com.vtxlab.bootcamp.bootcampsbforum.controller;
 
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import com.vtxlab.bootcamp.bootcampsbforum.dto.gov.UserCommentDTO;
+import com.vtxlab.bootcamp.bootcampsbforum.dto.gov.UserDTO;
 import com.vtxlab.bootcamp.bootcampsbforum.dto.gov.UserPostDTO;
 import com.vtxlab.bootcamp.bootcampsbforum.infra.ApiResponse;
 

@@ -4,6 +4,7 @@ api:
     endpoints:
       user: "/users"
       post: "/posts"
+      comment: "/comment"
 
 database: 
   postgres: "db_forum"

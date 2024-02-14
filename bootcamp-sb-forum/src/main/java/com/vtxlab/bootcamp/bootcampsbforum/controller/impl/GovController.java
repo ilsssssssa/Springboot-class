@@ -13,10 +13,11 @@ import com.vtxlab.bootcamp.bootcampsbforum.dto.gov.UserDTO;
 import com.vtxlab.bootcamp.bootcampsbforum.dto.gov.UserPostDTO;
 import com.vtxlab.bootcamp.bootcampsbforum.infra.ApiResponse;
 import com.vtxlab.bootcamp.bootcampsbforum.infra.Syscode;
+import com.vtxlab.bootcamp.bootcampsbforum.mapper.GovMapper;
 import com.vtxlab.bootcamp.bootcampsbforum.model.dto.jph.User;
 import com.vtxlab.bootcamp.bootcampsbforum.service.GovService;
 import com.vtxlab.bootcamp.bootcampsbforum.service.PostService;
-import com.vtxlab.bootcamp.bootcampsbforum.service.UserService;
+import com.vtxlab.bootcamp.bootcampsbforum.service.impl.ForumDatabaseHolder;
 
 @RestController
 @RequestMapping(value = "/gov/api/v1")
@@ -30,7 +31,13 @@ public class GovController implements GovOperation {
   private PostService postService;
 
   @Autowired
-  private ModelMapper modelMapper;
+  private ModelMapper modelMapper; // left join
+
+  @Autowired
+  ForumDatabaseHolder forumDatabaseHolder;
+
+  @Autowired
+  GovMapper govMapper;
 
   @Override
   public ApiResponse<List<UserPostDTO>> getUsers() {
@@ -52,7 +59,19 @@ public class GovController implements GovOperation {
               .phone(e.getPhone()) //
               .postDTOs(postDTOs) //
               .build();
-        }).collect(Collectors.toList());
+        })//
+        .collect(Collectors.toList());
+
+    // dto raw User
+    List<com.vtxlab.bootcamp.bootcampsbforum.entity.User> finalUser =
+        govService.getUsers().stream().map(e -> {
+          com.vtxlab.bootcamp.bootcampsbforum.entity.User entityUser =
+              govMapper.mapEntity(e);
+          return entityUser;
+        })//
+            .collect(Collectors.toList());
+
+    forumDatabaseHolder.saveUsers(finalUser);
 
     return ApiResponse.<List<UserPostDTO>>builder() //
         .code(Syscode.OK.getCode()) //
