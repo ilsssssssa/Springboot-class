@@ -10,13 +10,14 @@ import com.vtxlab.bootcamp.bootcampsbforum.service.PostService;
 
 @RestController
 @RequestMapping(value = "/api/v1")
-public class PostController implements PostOperation{
+public class PostController implements PostOperation {
   
   @Autowired
   private PostService postService;
 
   @Override
-  public List<Post> getPosts() {
-    return postService.getPosts();
+  public List<Post> getPostsFromJPH() {
+    return postService.getPostsFromJPH();
   }
+  
 }

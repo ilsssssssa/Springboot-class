@@ -4,19 +4,20 @@ api:
     endpoints:
       user: "/users"
       post: "/posts"
-      comment: "/comment"
+      
 
 database: 
   postgres: "db_forum"
 
 spring:
   datasource:
-    driverClassName: "org.hibernate.dialect.PostgreSQLDialect" # plug in # change drivername can change different product, no need to compile
+    driverClassName: "org.postgresql.Driver" # plug in # change drivername can change different product, no need to compile
     url: "jdbc:postgresql://localhost:5432/${database.postgres}"
     username: "postgres"
     password: "admin1234"
     
 spring.jpa:
+  # database-platform: "org.hibernate.dialect.PostgreSQLDialect"
   show-sql: true
   hibernate.ddl-auto: update # update
   # Hibernate ddl auto (create, create-drop, validate, update)

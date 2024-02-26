@@ -1,4 +1,4 @@
-package com.vtxlab.bootcamp.bootcampsbforum.dto.gov;
+package com.vtxlab.bootcamp.bootcampsbforum.dto.gov.response;
 
 import lombok.Builder;
 import lombok.Getter;

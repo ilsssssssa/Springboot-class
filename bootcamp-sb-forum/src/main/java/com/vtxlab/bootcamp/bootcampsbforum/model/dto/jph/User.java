@@ -68,7 +68,7 @@ public class User {
 
     private String catchPhrase;
 
-    @JsonProperty(value = "bs")
+    @JsonProperty(value = "bs") // deserialization
     private String busService;
 
   }

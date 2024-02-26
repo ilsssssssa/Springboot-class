@@ -4,6 +4,7 @@ import java.util.List;
 import com.vtxlab.bootcamp.bootcampsbforum.model.dto.jph.Post;
 
 public interface PostService {
+  
+  List<Post> getPostsFromJPH();
 
-  List<Post> getPosts();
 }

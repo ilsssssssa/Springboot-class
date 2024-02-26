@@ -7,23 +7,23 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import com.vtxlab.bootcamp.bootcampsbforum.entity.User;
+import com.vtxlab.bootcamp.bootcampsbforum.entity.UserEntity;
 
 @Repository // Bean // Controller // Sever
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
   // Query Methods
   // select * from users where username = ?
-  User findByUsername(String username);
+  UserEntity findByUsername(String username);
 
-  List<User> findAllByEmailAndPhoneOrderByEmailDesc(String email, String phone);
+  List<UserEntity> findAllByEmailAndPhoneOrderByEmailDesc(String email, String phone);
 
-  List<User> findAllByEmailOrPhone(String email, String phone, Sort sort);
+  List<UserEntity> findAllByEmailOrPhone(String email, String phone, Sort sort);
 
   // JPQL // @Query default by false // 實體對象進行查詢，使用的是類和屬性的名稱
   // 使用的是 Entity 的物件替代了原本的 Table // < > = findbyfield
   @Query("SELECT e FROM User e WHERE CAST(e.addrLat AS double) > :lat")
-  List<User> findAllByAddrLatGreaterThan(@Param("lat") Double latitude);
+  List<UserEntity> findAllByAddrLatGreaterThan(@Param("lat") Double latitude);
 
   // Native SQL // 使用傳統的SQL語法，直接操作數據庫表和列 注意不同數據庫之間的語法差異
   // 使用了原本的 Table // 將參數、條件帶入後就直接送到 SQL 執行
